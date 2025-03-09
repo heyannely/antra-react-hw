@@ -9,7 +9,10 @@ export default function App() {
           <p>Pending Tasks</p>
           <ul></ul>
         </div>
-        <div></div>
+        <div>
+          <p>Completed Tasks</p>
+          <ul></ul>
+        </div>
       </div>
     </div>
   );
