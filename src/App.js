@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import "./styles.css";
 
@@ -14,8 +14,8 @@ export default function App() {
   const [editTextCom, setEditTextCom] = useState("");
 
   const handleAddTask = () => {
-    console.log("clicked")
-    console.log(pendingTasks)
+    console.log("clicked");
+    console.log(pendingTasks);
     if (!taskInput.trim()) return;
     setPendingTasks((prev) => [...prev, taskInput]);
     setTaskInput("");
@@ -23,63 +23,61 @@ export default function App() {
 
   //pending Tasks
   const pendingHandleDelete = (idx) => {
-    console.log("penDel")
-    setPendingTasks(prev => prev.filter((_, i) => i !== idx))
-  }
+    console.log("penDel");
+    setPendingTasks((prev) => prev.filter((_, i) => i !== idx));
+  };
 
   const pendingHandleMovetoCom = (idx) => {
-    console.log("penMovetoCom")
+    console.log("penMovetoCom");
     const taskToMove = pendingTasks[idx];
-    setPendingTasks(prev => prev.filter((_, i)=> i !== idx));
-    setCompletedTasks(prev => [taskToMove, ...prev]); //prepend
-  }
+    setPendingTasks((prev) => prev.filter((_, i) => i !== idx));
+    setCompletedTasks((prev) => [taskToMove, ...prev]); //prepend
+  };
 
   const pendingHandleEdit = (idx) => {
-    console.log("penEdit")
+    console.log("penEdit");
     //track which task is being edited
-    if(editIndexPending === idx){
-      setPendingTasks((prev)=>{
+    if (editIndexPending === idx) {
+      setPendingTasks((prev) => {
         const newTasks = [...prev];
         newTasks[idx] = editTextPending;
-        return newTasks
+        return newTasks;
       });
 
       setEditIndexPending(-1); //turn off "edit"
-      setEditTextPending("") //clear text
+      setEditTextPending(""); //clear text
     } else {
       setEditIndexPending(idx);
-      setEditTextPending(pendingTasks[idx])
+      setEditTextPending(pendingTasks[idx]);
     }
-    
-  }
+  };
 
   //completed Tasks
   const completedHandleDelete = (idx) => {
     setCompletedTasks((prev) => prev.filter((_, i) => i !== idx));
-  }
+  };
 
   const completedHandleEdit = (idx) => {
-    if(editIndexCom === idx){
-      setCompletedTasks(prev=>{
+    if (editIndexCom === idx) {
+      setCompletedTasks((prev) => {
         const newTasks = [...prev];
         newTasks[idx] = editTextPending;
         return newTasks;
-      })
+      });
 
       setEditIndexCom(-1);
-      setEditTextCom("")
+      setEditTextCom("");
     } else {
       setEditIndexCom(idx);
-      setEditTextPending(completedTasks[idx])
+      setEditTextPending(completedTasks[idx]);
     }
-
-  }
+  };
 
   const completedHandleMoveToPending = (idx) => {
     const taskToMove = completedTasks[idx];
     setCompletedTasks((prev) => prev.filter((_, i) => i !== idx));
     setPendingTasks((prev) => [taskToMove, ...prev]);
-  }
+  };
 
   return (
     <div className="App">
@@ -97,19 +95,37 @@ export default function App() {
           <ul>
             {pendingTasks.map((task, index) => {
               const isEditing = editIndexPending === index;
-              return <li key={index}>
-                {isEditing ? (
-                  <input
-                    value={editTextPending}
-                    onChange={(e)=>setEditTextPending(e.target.value)}
-                  />
-                ) : (
-                  <span>{task}</span>
-                )}   
-              <button onClick={() => pendingHandleEdit(index)}>{isEditing?"Save":"Edit"}</button>
-              <button onClick={() => pendingHandleDelete(index)}>Del</button>
-              <button onClick={() => pendingHandleMovetoCom(index)}>MoveToCom</button>
-              </li>
+              return (
+                <li key={index}>
+                  <div className="task-text">
+                    {isEditing ? (
+                      <input
+                        value={editTextPending}
+                        onChange={(e) => setEditTextPending(e.target.value)}
+                      />
+                    ) : (
+                      <span>{task}</span>
+                    )}
+                  </div>
+                  <div className="task-buttons">
+                    <button id="edit" onClick={() => pendingHandleEdit(index)}>
+                      {isEditing ? "Save" : "Edit"}
+                    </button>
+                    <button
+                      id="delete"
+                      onClick={() => pendingHandleDelete(index)}
+                    >
+                      Del
+                    </button>
+                    <button
+                      id="move"
+                      onClick={() => pendingHandleMovetoCom(index)}
+                    >
+                      →
+                    </button>
+                  </div>
+                </li>
+              );
             })}
           </ul>
         </div>
@@ -117,21 +133,45 @@ export default function App() {
           <p>Completed Tasks</p>
           <ul>
             {completedTasks.map((task, index) => {
-              const isComEditing = editIndexCom === index
-              return <li key={index}>
-                {isComEditing ? (
-                  <input
-                    value={editTextPending}
-                    onChange={(e)=>{setEditTextPending(e.target.value)}}
-                  />
-                ) : (
-                  <span>{task}</span>
-                )}
-                
-                  <button onClick={() => completedHandleMoveToPending(index)}>Move to Pending</button>
-                  <button onClick={() => completedHandleEdit(index)}>{isComEditing ? "Save" : "Edit"}</button>
-                  <button onClick={() => completedHandleDelete(index)}>Delete</button>
-              </li>
+              const isComEditing = editIndexCom === index;
+              return (
+                <li key={index}>
+                  <div>
+                    <button
+                      id="move"
+                      onClick={() => completedHandleMoveToPending(index)}
+                    >
+                      ←
+                    </button>
+                  </div>
+                  <div className="task-text">
+                    {isComEditing ? (
+                      <input
+                        value={editTextPending}
+                        onChange={(e) => {
+                          setEditTextPending(e.target.value);
+                        }}
+                      />
+                    ) : (
+                      <span>{task}</span>
+                    )}
+                  </div>
+                  <div className="task-buttons">
+                    <button
+                      id="edit"
+                      onClick={() => completedHandleEdit(index)}
+                    >
+                      {isComEditing ? "Save" : "Edit"}
+                    </button>
+                    <button
+                      id="delete"
+                      onClick={() => completedHandleDelete(index)}
+                    >
+                      Del
+                    </button>
+                  </div>
+                </li>
+              );
             })}
           </ul>
         </div>
