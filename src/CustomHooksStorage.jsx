@@ -21,16 +21,18 @@ export default function CustomHooksStorage() {
 
   const boxStyle = {
     padding: "5px",
-    border: "1px solid grey",
-    margin: "10px"
+    border: "1px solid lightgray",
+    margin: "10px",
   };
 
   return (
-    
-    <div className="p-4 border rounded"> 
+    <div
+      style={{ padding: "5px", margin: "10px", border: "1px solid lightgray" }}
+    >
+      <h1>Local Storage & Custom Hooks</h1>
       {/* localstorage demonstration*/}
       <div style={boxStyle}>
-      <h3>Local Storage Demo</h3>
+        <h3>Local Storage Demo</h3>
         <input
           type="text"
           value={value}
@@ -40,25 +42,26 @@ export default function CustomHooksStorage() {
         <p>Saved Value: {value}</p>
       </div>
 
-
       {/* //toggle hook demonstration*/}
       <div style={boxStyle}>
-      <h3>Toggle Text Hook</h3>
+        <h3>Toggle Text Hook</h3>
         <button onClick={toggleVisibility}>
           {isVisible ? "Hide Text" : "Show Text"}
         </button>
         {isVisible && <p>ToggleText</p>}
       </div>
 
-      {/* cliboard hook demonstration */} 
+      {/* cliboard hook demonstration */}
       <div style={boxStyle}>
         <h3>Copy Text Hook</h3>
         <button onClick={() => copy("Hello, this text is copied!")}>
           {copied ? "Copied!" : "Copy Text"}
-        </button> <span>"Hello, this text is copied!"</span>
-        <div><input></input>
+        </button>{" "}
+        <span>"Hello, this text is copied!"</span>
+        <div>
+          <input></input>
+        </div>
       </div>
-    </div>
     </div>
   );
 }
